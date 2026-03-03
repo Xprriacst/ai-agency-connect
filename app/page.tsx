@@ -116,20 +116,12 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <p className="text-xs sm:text-sm text-slate-400">
-              Tu as les deux casquettes ?{" "}
-              <Link href="/register?type=both" className="text-brand-600 font-medium underline underline-offset-2 hover:text-brand-700 transition-colors">
-                Les deux
-              </Link>
-            </p>
-            <p className="text-xs sm:text-sm text-slate-400">
-              Déjà membre ?{" "}
-              <Link href="/profiles" className="text-brand-600 font-medium hover:underline">
-                Explorer les profils disponibles
-              </Link>
-            </p>
-          </div>
+          <p className="mt-4 text-xs sm:text-sm text-slate-400">
+            Tu as les deux casquettes ?{" "}
+            <Link href="/register?type=both" className="text-brand-600 font-medium underline underline-offset-2 hover:text-brand-700 transition-colors">
+              Les deux
+            </Link>
+          </p>
         </div>
       </section>
 
