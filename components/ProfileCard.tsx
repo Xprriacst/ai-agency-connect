@@ -33,16 +33,26 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-4">
           {/* Avatar */}
-          <div
-            className={cn(
-              "flex-shrink-0 w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-xl mb-3",
-              isTech
-                ? "bg-gradient-to-br from-tech-500 to-tech-600 shadow-tech-500/30"
-                : "bg-gradient-to-br from-biz-500 to-biz-600 shadow-biz-500/30"
-            )}
-          >
-            {profile.avatar}
-          </div>
+          {profile.photo ? (
+            <div className="flex-shrink-0 w-24 h-24 rounded-2xl overflow-hidden shadow-xl mb-3">
+              <img
+                src={profile.photo}
+                alt={profile.name}
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          ) : (
+            <div
+              className={cn(
+                "flex-shrink-0 w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-xl mb-3",
+                isTech
+                  ? "bg-gradient-to-br from-tech-500 to-tech-600 shadow-tech-500/30"
+                  : "bg-gradient-to-br from-biz-500 to-biz-600 shadow-biz-500/30"
+              )}
+            >
+              {profile.avatar}
+            </div>
+          )}
 
           <div className="flex items-center gap-2">
             <h3 className="font-bold text-slate-900 text-base">{profile.name}</h3>

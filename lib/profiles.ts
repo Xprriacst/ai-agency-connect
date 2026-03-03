@@ -6,6 +6,7 @@ export interface Profile {
   name: string;
   role: string;
   avatar: string;
+  photo?: string;
   location: string;
   bio: string;
   bullets: [string, string, string];
@@ -26,6 +27,7 @@ export const fakeProfiles: Profile[] = [
     name: "Thomas Renard",
     role: "Fondateur Tech",
     avatar: "TR",
+    photo: "/avatars/maxime.png",
     location: "Paris, France",
     bio: "Ex-ingénieur ML chez Criteo, 8 ans d'expérience en NLP et LLMs. J'ai construit des pipelines RAG pour 3 grands groupes français. Je cherche un co-fondateur business pour transformer mon expertise en une agence IA scalable.",
     bullets: [
@@ -47,6 +49,7 @@ export const fakeProfiles: Profile[] = [
     name: "Sophie Marchand",
     role: "Fondatrice Business",
     avatar: "SM",
+    photo: "/avatars/sophie.png",
     location: "Lyon, France",
     bio: "Directrice commerciale pendant 6 ans dans le conseil (McKinsey), spécialisée sur les transformations digitales. J'ai clôturé pour +20M€ de deals B2B. Je veux créer une agence IA mais j'ai besoin d'un CTO pour construire les solutions.",
     bullets: [
@@ -68,6 +71,7 @@ export const fakeProfiles: Profile[] = [
     name: "Karim Benzara",
     role: "Fondateur Tech",
     avatar: "KB",
+    photo: "/avatars/karim.png",
     location: "Bordeaux, France",
     bio: "Dev full-stack converti IA, autodidacte passionné. Créateur de 2 outils SaaS IA. Expert en intégration d'API LLMs et développement de chatbots avancés. Mon dernier projet : un assistant IA pour cabinets d'avocats.",
     bullets: [
@@ -89,6 +93,7 @@ export const fakeProfiles: Profile[] = [
     name: "Amélie Fontaine",
     role: "Fondatrice Business",
     avatar: "AF",
+    photo: "/avatars/thomas.png",
     location: "Nantes, France",
     bio: "Entrepreneuse en série avec 2 exits. Ex-DG d'une startup SaaS RH (80 personnes). Excellente connaissance du marché PME français. Je veux bâtir une agence IA centrée sur l'automatisation RH.",
     bullets: [
@@ -128,6 +133,7 @@ export const fakeProfiles: Profile[] = [
     name: "Maxime Leroux",
     role: "Fondateur Business",
     avatar: "ML",
+    photo: "/avatars/amelie.png",
     location: "Paris, France",
     bio: "10 ans en marketing digital, ex-CMO d'une agence de 50 personnes. J'ai structuré la croissance de +30 marques. Je vois une opportunité énorme dans l'IA pour le marketing et le contenu.",
     bullets: [
