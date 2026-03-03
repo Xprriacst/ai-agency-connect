@@ -200,16 +200,16 @@ export default function Home() {
       </section>
 
       {/* Séparateur "Processus de sélection" */}
-      <section className="py-10 sm:py-14 px-4 sm:px-6 bg-slate-900">
+      <section className="py-10 sm:py-14 px-4 sm:px-6 bg-slate-50 border-t border-slate-100">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold mb-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-5">
             <ShieldCheck className="w-3.5 h-3.5" />
             PROCESSUS DE SÉLECTION RIGOUREUX
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">
             Pourquoi seulement 1% des candidats sont acceptés
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
             Nous ne voulons pas une plateforme de plus. Chaque profil est vérifié, chaque
             parcours validé. Tu ne rencontreras ici que des fondateurs sérieux, avec des
             réalisations concrètes et une vision claire.
@@ -220,10 +220,10 @@ export default function Home() {
               { step: "02", title: "Vérification", desc: "Notre équipe vérifie chaque information sous 48h." },
               { step: "03", title: "Validation", desc: "Seulement les meilleurs profils sont publiés sur la plateforme." },
             ].map((s) => (
-              <div key={s.step} className="flex flex-col items-center text-center p-5 rounded-2xl bg-white/5 border border-white/10">
-                <div className="text-3xl font-black text-brand-400 mb-2">{s.step}</div>
-                <div className="font-bold text-white mb-1.5">{s.title}</div>
-                <div className="text-slate-400 text-xs sm:text-sm leading-relaxed">{s.desc}</div>
+              <div key={s.step} className="flex flex-col items-center text-center p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                <div className="text-3xl font-black text-brand-500 mb-2">{s.step}</div>
+                <div className="font-bold text-slate-900 mb-1.5">{s.title}</div>
+                <div className="text-slate-500 text-xs sm:text-sm leading-relaxed">{s.desc}</div>
               </div>
             ))}
           </div>
