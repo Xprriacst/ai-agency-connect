@@ -24,7 +24,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "1",
     type: "tech",
-    name: "Thomas Renard",
+    name: "Thomas R.",
     role: "Fondateur Tech",
     avatar: "TR",
     photo: "/avatars/maxime.png",
@@ -46,7 +46,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "2",
     type: "business",
-    name: "Sophie Marchand",
+    name: "Sophie M.",
     role: "Fondatrice Business",
     avatar: "SM",
     photo: "/avatars/sophie.png",
@@ -68,9 +68,9 @@ export const fakeProfiles: Profile[] = [
   {
     id: "3",
     type: "tech",
-    name: "Karim Benzara",
+    name: "Enzo D.",
     role: "Fondateur Tech",
-    avatar: "KB",
+    avatar: "ED",
     photo: "/avatars/karim.png",
     location: "Bordeaux, France",
     bio: "Dev full-stack converti IA, autodidacte passionné. Créateur de 2 outils SaaS IA. Expert en intégration d'API LLMs et développement de chatbots avancés. Mon dernier projet : un assistant IA pour cabinets d'avocats.",
@@ -90,7 +90,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "4",
     type: "business",
-    name: "Amélie Fontaine",
+    name: "Amélie F.",
     role: "Fondatrice Business",
     avatar: "AF",
     photo: "/avatars/thomas.png",
@@ -112,9 +112,10 @@ export const fakeProfiles: Profile[] = [
   {
     id: "5",
     type: "tech",
-    name: "Lucas Dubois",
+    name: "Lucas D.",
     role: "Fondateur Tech",
     avatar: "LD",
+    photo: "/avatars/lucas.png",
     location: "Toulouse, France",
     bio: "Doctorat en IA à l'INRIA, 5 ans de recherche en vision par ordinateur et multimodal. J'ai publié dans NeurIPS et ICLR. Je veux quitter la recherche pour créer une agence IA appliquée à l'industrie.",
     bullets: [
@@ -130,10 +131,9 @@ export const fakeProfiles: Profile[] = [
   {
     id: "6",
     type: "business",
-    name: "Maxime Leroux",
+    name: "Maxime L.",
     role: "Fondateur Business",
     avatar: "ML",
-    photo: "/avatars/amelie.png",
     location: "Paris, France",
     bio: "10 ans en marketing digital, ex-CMO d'une agence de 50 personnes. J'ai structuré la croissance de +30 marques. Je vois une opportunité énorme dans l'IA pour le marketing et le contenu.",
     bullets: [
@@ -152,9 +152,10 @@ export const fakeProfiles: Profile[] = [
   {
     id: "7",
     type: "tech",
-    name: "Inès Moussa",
+    name: "Inès M.",
     role: "Fondatrice Tech",
     avatar: "IM",
+    photo: "/avatars/amelie.png",
     location: "Montpellier, France",
     bio: "Data Scientist senior chez BNP Paribas pendant 5 ans. Spécialiste en IA pour la finance (scoring, détection de fraude, prévision). Je cherche une associée business pour lancer une offre IA dédiée aux fintechs et assurances.",
     bullets: [
@@ -173,7 +174,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "8",
     type: "business",
-    name: "Romain Chevallier",
+    name: "Romain C.",
     role: "Fondateur Business",
     avatar: "RC",
     location: "Strasbourg, France",
@@ -191,7 +192,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "9",
     type: "tech",
-    name: "Adrien Petit",
+    name: "Adrien P.",
     role: "Fondateur Tech",
     avatar: "AP",
     location: "Lille, France",
@@ -212,7 +213,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "10",
     type: "business",
-    name: "Clara Bonnet",
+    name: "Clara B.",
     role: "Fondatrice Business",
     avatar: "CB",
     location: "Paris, France",
@@ -233,7 +234,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "11",
     type: "tech",
-    name: "Youssef Alami",
+    name: "Youssef A.",
     role: "Fondateur Tech",
     avatar: "YA",
     location: "Paris, France",
@@ -254,7 +255,7 @@ export const fakeProfiles: Profile[] = [
   {
     id: "12",
     type: "business",
-    name: "Lucie Garnier",
+    name: "Lucie G.",
     role: "Fondatrice Business",
     avatar: "LG",
     location: "Bordeaux, France",
