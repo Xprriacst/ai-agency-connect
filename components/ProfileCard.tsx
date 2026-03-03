@@ -7,10 +7,9 @@ import { cn } from "@/lib/utils";
 
 interface ProfileCardProps {
   profile: Profile;
-  showFullBio?: boolean;
 }
 
-export default function ProfileCard({ profile, showFullBio = false }: ProfileCardProps) {
+export default function ProfileCard({ profile }: ProfileCardProps) {
   const isTech = profile.type === "tech";
 
   return (
