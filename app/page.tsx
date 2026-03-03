@@ -132,7 +132,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-brand-500 flex-shrink-0" />
               <span className="text-sm sm:text-base font-semibold text-slate-700">
-                Nous n'acceptons que <span className="text-brand-600 font-extrabold">10%</span> des candidatures
+                Nous n&apos;acceptons que <span className="text-brand-600 font-extrabold">10%</span> des candidatures
               </span>
             </div>
             <span className="hidden sm:block text-slate-300">·</span>

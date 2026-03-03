@@ -86,21 +86,8 @@ function RegisterForm() {
     reader.readAsDataURL(file);
   };
 
-  const suggestions = profileType === "business" ? bizSkillsSuggestions : techSkillsSuggestions;
-
   const updateForm = (key: string, value: string | boolean | string[]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const addSkill = (skill: string) => {
-    if (skill && !form.skills.includes(skill)) {
-      updateForm("skills", [...form.skills, skill]);
-    }
-    updateForm("skillInput", "");
-  };
-
-  const removeSkill = (skill: string) => {
-    updateForm("skills", form.skills.filter((s) => s !== skill));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
