@@ -85,7 +85,7 @@ function RegisterForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type: profileType,
+          type: profileType === "both" ? "tech" : profileType,
           firstName: form.firstName,
           lastName: form.lastName,
           email: form.email,
