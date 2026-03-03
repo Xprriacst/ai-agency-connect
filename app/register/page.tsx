@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type Step = 1 | 2 | 3;
-type ProfileType = "tech" | "business";
+type ProfileType = "tech" | "business" | "both";
 
 const techSkillsSuggestions = [
   "Python", "LangChain", "OpenAI API", "RAG", "Fine-tuning", "LLMs",
@@ -45,7 +45,8 @@ const agencyStages = [
 function RegisterForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const initialType = (searchParams.get("type") as ProfileType) || null;
+  const rawType = searchParams.get("type");
+  const initialType = (rawType === "tech" || rawType === "business" || rawType === "both" ? rawType : null) as ProfileType | null;
 
   const [step, setStep] = useState<Step>(initialType ? 2 : 1);
   const [profileType, setProfileType] = useState<ProfileType | null>(initialType);
@@ -61,6 +62,9 @@ function RegisterForm() {
     reason1: "",
     reason2: "",
     reason3: "",
+    bizReason1: "",
+    bizReason2: "",
+    bizReason3: "",
     skills: [] as string[],
     skillInput: "",
     hasAgency: false,
@@ -83,7 +87,7 @@ function RegisterForm() {
     reader.readAsDataURL(file);
   };
 
-  const suggestions = profileType === "tech" ? techSkillsSuggestions : bizSkillsSuggestions;
+  const suggestions = profileType === "business" ? bizSkillsSuggestions : techSkillsSuggestions;
 
   const updateForm = (key: string, value: string | boolean | string[]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -114,7 +118,10 @@ function RegisterForm() {
           lastName: form.lastName,
           email: form.email,
           location: form.location,
-          bio: [form.reason1, form.reason2, form.reason3].filter(Boolean).join(' | '),
+          bio: [
+            ...([form.reason1, form.reason2, form.reason3].filter(Boolean)),
+            ...(isBoth ? [form.bizReason1, form.bizReason2, form.bizReason3].filter(Boolean) : []),
+          ].join(' | '),
           skills: form.skills,
           linkedin: form.linkedin,
           website: form.website,
@@ -137,6 +144,7 @@ function RegisterForm() {
   };
 
   const isTech = profileType === "tech";
+  const isBoth = profileType === "both";
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -222,9 +230,18 @@ function RegisterForm() {
               </button>
             </div>
 
-            <p className="text-center text-sm text-slate-400 mt-8">
-              Tu peux modifier ton profil à tout moment après validation.
-            </p>
+            <div className="text-center mt-6 space-y-2">
+              <p className="text-sm text-slate-500">
+                Tu as les deux casquettes ?{" "}
+                <button
+                  onClick={() => { setProfileType("both"); setStep(2); }}
+                  className="text-brand-600 font-semibold underline underline-offset-2 hover:text-brand-700 transition-colors"
+                >
+                  Les deux
+                </button>
+              </p>
+              <p className="text-xs text-slate-400">Tu peux modifier ton profil à tout moment après validation.</p>
+            </div>
           </div>
         )}
 
@@ -242,19 +259,19 @@ function RegisterForm() {
                   <span>50%</span>
                 </div>
                 <div className="h-1.5 bg-slate-200 rounded-full">
-                  <div className={cn("h-full rounded-full transition-all", isTech ? "gradient-tech" : "gradient-biz")} style={{ width: "50%" }} />
+                  <div className={cn("h-full rounded-full transition-all", isBoth ? "bg-gradient-to-r from-tech-500 to-biz-500" : isTech ? "gradient-tech" : "gradient-biz")} style={{ width: "50%" }} />
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-3 mb-8">
-              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", isTech ? "gradient-tech" : "gradient-biz")}>
-                {isTech ? <Code2 className="w-5 h-5 text-white" /> : <TrendingUp className="w-5 h-5 text-white" />}
+              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", isBoth ? "bg-gradient-to-br from-tech-500 to-biz-500" : isTech ? "gradient-tech" : "gradient-biz")}>
+                {isBoth ? <Zap className="w-5 h-5 text-white" /> : isTech ? <Code2 className="w-5 h-5 text-white" /> : <TrendingUp className="w-5 h-5 text-white" />}
               </div>
               <div>
                 <h1 className="text-2xl font-extrabold text-slate-900">Tes informations</h1>
                 <p className="text-slate-500 text-sm">
-                  Profil {isTech ? "Technique" : "Business"} — Parle-nous de toi
+                  Profil {isBoth ? "Tech + Business" : isTech ? "Technique" : "Business"} — Parle-nous de toi
                 </p>
               </div>
             </div>
@@ -332,25 +349,29 @@ function RegisterForm() {
                   />
                 </div>
 
+                {/* Réalisations tech */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <h2 className="font-bold text-slate-900">3 raisons de te sélectionner *</h2>
+                    <h2 className="font-bold text-slate-900">
+                      {isBoth ? "3 réalisations techniques *" : "3 raisons de te sélectionner *"}
+                    </h2>
                   </div>
                   <p className="text-xs text-slate-400 -mt-2 mb-3">
-                    {isTech
+                    {!isBoth && (isTech
                       ? "Expériences, projets livrés, certifications — sois précis et chiffré."
-                      : "Réseau actionnable, deals closés, résultats mesurables — sois précis et chiffré."}
+                      : "Réseau actionnable, deals closés, résultats mesurables — sois précis et chiffré.")}
+                    {isBoth && "Projets IA livrés, compétences techniques, certifications — sois chiffré."}
                   </p>
                   {(["reason1", "reason2", "reason3"] as const).map((key, i) => (
                     <div key={key} className="flex items-start gap-3">
-                      <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold mt-2.5 ${isTech ? "bg-tech-500" : "bg-biz-500"}`}>
+                      <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold mt-2.5 ${isBoth ? "bg-tech-500" : isTech ? "bg-tech-500" : "bg-biz-500"}`}>
                         {i + 1}
                       </span>
                       <textarea
                         required
                         rows={2}
                         placeholder={
-                          isTech
+                          (isTech || isBoth)
                             ? ["Dev full-stack 5 ans d'expérience, spécialiste LLMs et NLP", "3 projets d'automatisation déployés chez des clients PME", "Certification OpenAI + AWS ML Engineer"][i]
                             : ["Réseau de 10+ PME actionnables dans mon secteur", "3 ans de prospection, 150 cold calls réalisés", "+30% de CA généré sur mon dernier poste"][i]
                         }
@@ -361,10 +382,35 @@ function RegisterForm() {
                     </div>
                   ))}
                 </div>
+
+                {/* Réalisations business (profil both uniquement) */}
+                {isBoth && (
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <div>
+                      <h2 className="font-bold text-slate-900">3 réalisations commerciales *</h2>
+                      <p className="text-xs text-slate-400 mt-1 mb-3">Réseau actionnable, deals closés, résultats mesurables — sois chiffré.</p>
+                    </div>
+                    {(["bizReason1", "bizReason2", "bizReason3"] as const).map((key, i) => (
+                      <div key={key} className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold mt-2.5 bg-biz-500">
+                          {i + 1}
+                        </span>
+                        <textarea
+                          required
+                          rows={2}
+                          placeholder={["Réseau de 10+ PME actionnables dans mon secteur", "3 ans de prospection, 150 cold calls réalisés", "+30% de CA généré sur mon dernier poste"][i]}
+                          value={form[key]}
+                          onChange={(e) => updateForm(key, e.target.value)}
+                          className="input-field resize-none flex-1"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Skills — tech only */}
-              {isTech && <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4">
+              {/* Skills — tech or both */}
+              {(isTech || isBoth) && <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4">
                 <h2 className="font-bold text-slate-900">Compétences techniques *</h2>
 
                 {form.skills.length > 0 && (

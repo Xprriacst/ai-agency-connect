@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         last_name: body.lastName,
         email: body.email,
         location: body.location,
-        bio: body.bio,
+        bio: body.bio || null,
         skills: body.skills ?? [],
         linkedin: body.linkedin || null,
         website: body.website || null,

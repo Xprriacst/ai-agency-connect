@@ -56,7 +56,7 @@ export default function Home() {
           {/* Badge exclusivité */}
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm font-semibold mb-6 sm:mb-8">
             <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500 flex-shrink-0" />
-            Seulement 1% des candidatures sont acceptées
+            Seulement 10% des candidatures sont acceptées
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] mb-5 sm:mb-6">
@@ -66,7 +66,7 @@ export default function Home() {
               pour développer ton agence IA
             </span>
             <span className="block text-2xl sm:text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400 mt-2">
-              parmi le top 1% des fondateurs
+              parmi le top 10% des fondateurs
             </span>
           </h1>
 
@@ -97,7 +97,6 @@ export default function Home() {
               <div className="text-left flex-1">
                 <div className="text-xs font-medium text-tech-100 mb-0.5">Je suis un fondateur</div>
                 <div className="text-base sm:text-lg font-bold">Profil Technique</div>
-                <div className="text-xs sm:text-sm text-tech-100">Dev IA, ML, Data Science...</div>
               </div>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </Link>
@@ -112,36 +111,40 @@ export default function Home() {
               <div className="text-left flex-1">
                 <div className="text-xs font-medium text-biz-100 mb-0.5">Je suis un fondateur</div>
                 <div className="text-base sm:text-lg font-bold">Profil Business</div>
-                <div className="text-xs sm:text-sm text-biz-100">Commercial, Marketing, Ops...</div>
               </div>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </Link>
           </div>
 
-          <p className="mt-5 text-xs sm:text-sm text-slate-400">
-            Déjà membre ?{" "}
-            <Link href="/profiles" className="text-brand-600 font-medium hover:underline">
-              Explorer les profils disponibles
-            </Link>
-          </p>
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <p className="text-xs sm:text-sm text-slate-400">
+              Tu as les deux casquettes ?{" "}
+              <Link href="/register?type=both" className="text-brand-600 font-medium underline underline-offset-2 hover:text-brand-700 transition-colors">
+                Les deux
+              </Link>
+            </p>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Déjà membre ?{" "}
+              <Link href="/profiles" className="text-brand-600 font-medium hover:underline">
+                Explorer les profils disponibles
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Stats bar */}
-      <section className="py-6 sm:py-10 border-y border-slate-100 bg-slate-50/60">
+      {/* KPI bar */}
+      <section className="py-6 sm:py-8 border-y border-slate-100 bg-slate-50/60">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8">
-            {[
-              { value: "< 1%", label: "Taux d'acceptation" },
-              { value: "34", label: "Duos formés" },
-              { value: "18", label: "Agences lancées" },
-              { value: "48h", label: "Délai de réponse" },
-            ].map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-0.5">{s.value}</div>
-                <div className="text-xs sm:text-sm text-slate-500">{s.label}</div>
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-brand-500 flex-shrink-0" />
+              <span className="text-sm sm:text-base font-semibold text-slate-700">
+                Nous n'acceptons que <span className="text-brand-600 font-extrabold">10%</span> des candidatures
+              </span>
+            </div>
+            <span className="hidden sm:block text-slate-300">·</span>
+            <span className="text-xs sm:text-sm text-slate-500">Chaque profil est vérifié manuellement sous 48h</span>
           </div>
         </div>
       </section>
@@ -160,7 +163,7 @@ export default function Home() {
                 Les meilleurs développeurs IA
               </h2>
               <p className="text-slate-500 text-sm sm:text-base max-w-lg">
-                Ingénieurs ML, data scientists et experts LLMs sélectionnés sur dossier.
+                Experts IA gen, automatisation n8n, agents IA et vibe coders sélectionnés sur dossier.
                 Ils cherchent un co-fondateur business pour passer à l&apos;échelle.
               </p>
             </div>
@@ -207,7 +210,7 @@ export default function Home() {
             PROCESSUS DE SÉLECTION RIGOUREUX
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">
-            Pourquoi seulement 1% des candidats sont acceptés
+            Pourquoi seulement 10% des candidats sont acceptés
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
             Nous ne voulons pas une plateforme de plus. Chaque profil est vérifié, chaque
