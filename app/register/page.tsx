@@ -17,20 +17,6 @@ import { cn } from "@/lib/utils";
 type Step = 1 | 2 | 3;
 type ProfileType = "tech" | "business" | "both";
 
-const techSkillsSuggestions = [
-  "Python", "LangChain", "OpenAI API", "RAG", "Fine-tuning", "LLMs",
-  "NLP", "Computer Vision", "MLOps", "Hugging Face", "PyTorch", "TensorFlow",
-  "Node.js", "React", "FastAPI", "Docker", "AWS", "Azure AI",
-  "Agents IA", "n8n", "Make/Zapier", "Prompt Engineering", "Data Science",
-];
-
-const bizSkillsSuggestions = [
-  "Vente B2B", "Growth Marketing", "Fundraising", "Stratégie Go-to-Market",
-  "Account Management", "Direction commerciale", "Partenariats",
-  "Marketing digital", "SEO/SEA", "Copywriting", "Leadership",
-  "Gestion de projet", "Conseil en stratégie", "Finance", "RH",
-  "Secteur public", "LegalTech", "Retail", "Industrie", "SaaS",
-];
 
 const agencyStages = [
   "Idée / en exploration",
