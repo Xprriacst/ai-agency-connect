@@ -70,7 +70,18 @@ function RegisterForm() {
     lookingFor: "",
     linkedin: "",
     website: "",
+    photoPreview: "",
   });
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      updateForm("photoPreview", ev.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const suggestions = profileType === "tech" ? techSkillsSuggestions : bizSkillsSuggestions;
 
@@ -252,11 +263,33 @@ function RegisterForm() {
               <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-5">
                 <h2 className="font-bold text-slate-900">Informations personnelles</h2>
 
+                {/* Photo upload */}
+                <div>
+                  <label className="label">Ta photo <span className="text-slate-400 font-normal">(optionnel)</span></label>
+                  <div className="flex items-center gap-4">
+                    <div className={cn(
+                      "w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden flex-shrink-0 shadow-md",
+                      form.photoPreview ? "" : isTech ? "gradient-tech" : "gradient-biz"
+                    )}>
+                      {form.photoPreview
+                        ? <img src={form.photoPreview} alt="preview" className="w-full h-full object-cover" />
+                        : <span className="text-white text-xl font-bold">{form.firstName?.[0] || "?"}</span>
+                      }
+                    </div>
+                    <label className={cn(
+                      "cursor-pointer flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed text-sm font-medium transition-colors",
+                      isTech ? "border-tech-300 text-tech-600 hover:bg-tech-50" : "border-biz-300 text-biz-600 hover:bg-biz-50"
+                    )}>
+                      <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
+                      Choisir une photo
+                    </label>
+                  </div>
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="label">Prénom *</label>
+                    <label className="label">Prénom</label>
                     <input
-                      required
                       type="text"
                       placeholder="Thomas"
                       value={form.firstName}
@@ -265,9 +298,8 @@ function RegisterForm() {
                     />
                   </div>
                   <div>
-                    <label className="label">Nom *</label>
+                    <label className="label">Nom</label>
                     <input
-                      required
                       type="text"
                       placeholder="Renard"
                       value={form.lastName}
@@ -290,9 +322,8 @@ function RegisterForm() {
                 </div>
 
                 <div>
-                  <label className="label">Ville / Région *</label>
+                  <label className="label">Ville / Région <span className="text-slate-400 font-normal">(optionnel)</span></label>
                   <input
-                    required
                     type="text"
                     placeholder="Paris, France"
                     value={form.location}
@@ -332,11 +363,9 @@ function RegisterForm() {
                 </div>
               </div>
 
-              {/* Skills */}
-              <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4">
-                <h2 className="font-bold text-slate-900">
-                  {isTech ? "Compétences techniques" : "Compétences business"} *
-                </h2>
+              {/* Skills — tech only */}
+              {isTech && <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4">
+                <h2 className="font-bold text-slate-900">Compétences techniques *</h2>
 
                 {form.skills.length > 0 && (
                   <div className="flex flex-wrap gap-2">
@@ -398,7 +427,7 @@ function RegisterForm() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </div>}
 
               {/* Links */}
               <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4">
