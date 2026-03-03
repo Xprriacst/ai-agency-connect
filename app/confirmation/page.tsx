@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CheckCircle, Clock, Mail, ArrowRight, Zap, Users, Sparkles } from "lucide-react";
+import { CheckCircle, Clock, Mail, Zap, Sparkles } from "lucide-react";
 
 const nextSteps = [
   {
@@ -15,7 +15,7 @@ const nextSteps = [
     description: "Tu recevras un email dès que ton profil sera validé et visible par les autres fondateurs.",
   },
   {
-    icon: Users,
+    icon: Zap,
     title: "Mise en relation",
     description: "Une fois validé, tu pourras contacter les profils qui t'intéressent directement.",
   },
@@ -88,23 +88,6 @@ export default function ConfirmationPage() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Explore while waiting */}
-        <div className="rounded-2xl gradient-brand p-7 text-white text-center mb-8 shadow-xl shadow-brand-500/30">
-          <h3 className="text-xl font-bold mb-2">En attendant...</h3>
-          <p className="text-brand-100 text-sm mb-6 leading-relaxed">
-            Explore les profils déjà disponibles sur la plateforme.
-            Peut-être que ton futur associé t&apos;attend déjà !
-          </p>
-          <Link
-            href="/profiles"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-white text-brand-700 font-bold hover:bg-brand-50 transition-colors shadow-lg text-sm"
-          >
-            <Users className="w-4 h-4" />
-            Explorer les profils
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
 
         {/* Home link */}
