@@ -13,6 +13,8 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<"all" | "tech" | "business">("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+  const [totalViews, setTotalViews] = useState<number | null>(null);
+  const [todayViews, setTodayViews] = useState<number | null>(null);
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -35,7 +37,22 @@ export default function AdminUsersPage() {
       if (!error && data) setProfiles(data as SubmittedProfile[]);
       setLoading(false);
     }
+    async function fetchPageViews() {
+      const { count: total } = await supabase
+        .from("page_views")
+        .select("*", { count: "exact", head: true });
+      setTotalViews(total ?? 0);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const { count: todayCount } = await supabase
+        .from("page_views")
+        .select("*", { count: "exact", head: true })
+        .gte("visited_at", today.toISOString());
+      setTodayViews(todayCount ?? 0);
+    }
     fetchProfiles();
+    fetchPageViews();
   }, [authenticated]);
 
   const filtered = profiles.filter((p) => {
@@ -74,6 +91,33 @@ export default function AdminUsersPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
+
+        {/* Stats cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 flex flex-col gap-1">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Visites totales</p>
+            <p className="text-3xl font-bold text-violet-400">
+              {totalViews === null ? "…" : totalViews}
+            </p>
+          </div>
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 flex flex-col gap-1">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Visites aujourd&apos;hui</p>
+            <p className="text-3xl font-bold text-violet-400">
+              {todayViews === null ? "…" : todayViews}
+            </p>
+          </div>
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 flex flex-col gap-1">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Inscrits total</p>
+            <p className="text-3xl font-bold text-violet-400">{profiles.length}</p>
+          </div>
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 flex flex-col gap-1">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">En attente</p>
+            <p className="text-3xl font-bold text-yellow-400">
+              {profiles.filter((p) => p.status === "pending").length}
+            </p>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">
             Inscrits{" "}
