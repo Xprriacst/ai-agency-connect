@@ -11,6 +11,24 @@ export default function AdminUsersPage() {
   const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
   const [totalViews, setTotalViews] = useState<number | null>(null);
   const [todayViews, setTodayViews] = useState<number | null>(null);
+  const [sources, setSources] = useState<{ name: string; count: number }[]>([]);
+
+  function parseSource(referrer: string | null): string {
+    if (!referrer) return "Direct";
+    try {
+      const host = new URL(referrer).hostname.replace(/^www\./, "");
+      if (host.includes("google")) return "Google";
+      if (host.includes("linkedin")) return "LinkedIn";
+      if (host.includes("t.co") || host.includes("twitter") || host.includes("x.com")) return "Twitter / X";
+      if (host.includes("facebook") || host.includes("fb.com")) return "Facebook";
+      if (host.includes("instagram")) return "Instagram";
+      if (host.includes("youtube")) return "YouTube";
+      if (host.includes("tiktok")) return "TikTok";
+      return host;
+    } catch {
+      return "Autre";
+    }
+  }
 
   useEffect(() => {
     if (!authenticated) return;
@@ -36,6 +54,21 @@ export default function AdminUsersPage() {
         .select("*", { count: "exact", head: true })
         .gte("visited_at", today.toISOString());
       setTodayViews(todayCount ?? 0);
+
+      const { data: refData } = await supabase
+        .from("page_views")
+        .select("referrer");
+      if (refData) {
+        const counts: Record<string, number> = {};
+        refData.forEach((row: { referrer: string | null }) => {
+          const src = parseSource(row.referrer);
+          counts[src] = (counts[src] ?? 0) + 1;
+        });
+        const sorted = Object.entries(counts)
+          .map(([name, count]) => ({ name, count }))
+          .sort((a, b) => b.count - a.count);
+        setSources(sorted);
+      }
     }
     fetchProfiles();
     fetchPageViews();
@@ -50,6 +83,31 @@ export default function AdminUsersPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
       <div className="max-w-5xl mx-auto">
+
+        {/* Sources de trafic */}
+        {sources.length > 0 && (
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 mb-8">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-4">Sources de trafic</p>
+            <div className="flex flex-col gap-2">
+              {sources.map((s) => {
+                const max = sources[0].count;
+                const pct = Math.round((s.count / max) * 100);
+                return (
+                  <div key={s.name} className="flex items-center gap-3">
+                    <span className="text-sm text-gray-300 w-32 shrink-0">{s.name}</span>
+                    <div className="flex-1 bg-gray-800 rounded-full h-2">
+                      <div
+                        className="bg-violet-500 h-2 rounded-full"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="text-sm text-gray-400 w-8 text-right">{s.count}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Stats cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
