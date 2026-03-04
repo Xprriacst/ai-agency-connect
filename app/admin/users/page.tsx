@@ -21,6 +21,9 @@ export default function AdminUsersPage() {
     if (password === ADMIN_PASSWORD) {
       setAuthenticated(true);
       setError("");
+      const expires = new Date();
+      expires.setFullYear(expires.getFullYear() + 1);
+      document.cookie = `admin_session=1; path=/; expires=${expires.toUTCString()}`;
     } else {
       setError("Mot de passe incorrect");
     }

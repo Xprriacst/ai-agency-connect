@@ -7,6 +7,8 @@ export default function PageTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
+    const isAdmin = document.cookie.split(";").some((c) => c.trim().startsWith("admin_session="));
+    if (isAdmin) return;
     fetch("/api/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
