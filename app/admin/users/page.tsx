@@ -3,31 +3,14 @@
 import { useEffect, useState } from "react";
 import { supabase, SubmittedProfile } from "@/lib/supabase";
 
-const ADMIN_PASSWORD = "admin2024";
-
 export default function AdminUsersPage() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [authenticated] = useState(true);
   const [profiles, setProfiles] = useState<SubmittedProfile[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<"all" | "tech" | "business">("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
   const [totalViews, setTotalViews] = useState<number | null>(null);
   const [todayViews, setTodayViews] = useState<number | null>(null);
-
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setAuthenticated(true);
-      setError("");
-      const expires = new Date();
-      expires.setFullYear(expires.getFullYear() + 1);
-      document.cookie = `admin_session=1; path=/; expires=${expires.toUTCString()}`;
-    } else {
-      setError("Mot de passe incorrect");
-    }
-  }
 
   useEffect(() => {
     if (!authenticated) return;
@@ -56,40 +39,13 @@ export default function AdminUsersPage() {
     }
     fetchProfiles();
     fetchPageViews();
-  }, [authenticated]);
+  }, []);
 
   const filtered = profiles.filter((p) => {
     const typeOk = filter === "all" || p.type === filter;
     const statusOk = statusFilter === "all" || p.status === statusFilter;
     return typeOk && statusOk;
   });
-
-  if (!authenticated) {
-    return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <form
-          onSubmit={handleLogin}
-          className="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-sm flex flex-col gap-4"
-        >
-          <h1 className="text-white text-2xl font-bold text-center">Admin</h1>
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="bg-gray-800 text-white rounded-lg px-4 py-3 outline-none border border-gray-700 focus:border-violet-500"
-          />
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-          <button
-            type="submit"
-            className="bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg py-3 transition-colors"
-          >
-            Connexion
-          </button>
-        </form>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
