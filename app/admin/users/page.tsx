@@ -17,6 +17,7 @@ export default function AdminUsersPage() {
     if (!referrer) return "Direct";
     try {
       const host = new URL(referrer).hostname.replace(/^www\./, "");
+      if (host.includes("netlify.app")) return "Direct";
       if (host.includes("google")) return "Google";
       if (host.includes("linkedin")) return "LinkedIn";
       if (host.includes("t.co") || host.includes("twitter") || host.includes("x.com")) return "Twitter / X";
