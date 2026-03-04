@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2 | 3 | 4;
 type ProfileType = "tech" | "business" | "both";
 
 
@@ -217,7 +217,7 @@ function RegisterForm() {
           </div>
         )}
 
-        {/* Step 2 — Infos personnelles */}
+        {/* Step 2 — Prénom + Email */}
         {step === 2 && profileType && (
           <div className="animate-slide-up">
             {/* Progress */}
@@ -227,11 +227,99 @@ function RegisterForm() {
               </button>
               <div className="flex-1">
                 <div className="flex justify-between text-xs text-slate-400 mb-1.5">
-                  <span>Étape 1 sur 2</span>
-                  <span>50%</span>
+                  <span>Étape 1 sur 3</span>
+                  <span>33%</span>
                 </div>
                 <div className="h-1.5 bg-slate-200 rounded-full">
-                  <div className={cn("h-full rounded-full transition-all", isBoth ? "bg-gradient-to-r from-tech-500 to-biz-500" : isTech ? "gradient-tech" : "gradient-biz")} style={{ width: "50%" }} />
+                  <div className={cn("h-full rounded-full transition-all", isBoth ? "bg-gradient-to-r from-tech-500 to-biz-500" : isTech ? "gradient-tech" : "gradient-biz")} style={{ width: "33%" }} />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 mb-8">
+              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", isBoth ? "bg-gradient-to-br from-tech-500 to-biz-500" : isTech ? "gradient-tech" : "gradient-biz")}>
+                {isBoth ? <Zap className="w-5 h-5 text-white" /> : isTech ? <Code2 className="w-5 h-5 text-white" /> : <TrendingUp className="w-5 h-5 text-white" />}
+              </div>
+              <div>
+                <h1 className="text-2xl font-extrabold text-slate-900">Pour commencer</h1>
+                <p className="text-slate-500 text-sm">
+                  Profil {isBoth ? "Tech + Business" : isTech ? "Technique" : "Business"} — Dis-nous qui tu es
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={(e) => { e.preventDefault(); setStep(3); }} className="space-y-6">
+              <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-5">
+                <h2 className="font-bold text-slate-900">Tes coordonnées</h2>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Prénom *</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Thomas"
+                      value={form.firstName}
+                      onChange={(e) => updateForm("firstName", e.target.value)}
+                      className="input-field"
+                    />
+                  </div>
+                  <div>
+                    <label className="label">Nom <span className="text-slate-400 font-normal">(optionnel)</span></label>
+                    <input
+                      type="text"
+                      placeholder="Renard"
+                      value={form.lastName}
+                      onChange={(e) => updateForm("lastName", e.target.value)}
+                      className="input-field"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="label">Email professionnel *</label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="thomas@example.com"
+                    value={form.email}
+                    onChange={(e) => updateForm("email", e.target.value)}
+                    className="input-field"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className={cn(
+                  "w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white text-base shadow-xl transition-all duration-200 active:scale-95",
+                  isTech
+                    ? "gradient-tech shadow-tech-500/30 hover:shadow-tech-500/50"
+                    : "gradient-biz shadow-biz-500/30 hover:shadow-biz-500/50"
+                )}
+              >
+                Continuer
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* Step 3 — Infos personnelles */}
+        {step === 3 && profileType && (
+          <div className="animate-slide-up">
+            {/* Progress */}
+            <div className="flex items-center gap-3 mb-8">
+              <button onClick={() => setStep(2)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <div className="flex-1">
+                <div className="flex justify-between text-xs text-slate-400 mb-1.5">
+                  <span>Étape 2 sur 3</span>
+                  <span>66%</span>
+                </div>
+                <div className="h-1.5 bg-slate-200 rounded-full">
+                  <div className={cn("h-full rounded-full transition-all", isBoth ? "bg-gradient-to-r from-tech-500 to-biz-500" : isTech ? "gradient-tech" : "gradient-biz")} style={{ width: "66%" }} />
                 </div>
               </div>
             </div>
@@ -248,7 +336,7 @@ function RegisterForm() {
               </div>
             </div>
 
-            <form onSubmit={(e) => { e.preventDefault(); setStep(3); }} className="space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setStep(4); }} className="space-y-6">
               <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-5">
                 <h2 className="font-bold text-slate-900">Informations personnelles</h2>
 
@@ -273,41 +361,6 @@ function RegisterForm() {
                       Choisir une photo
                     </label>
                   </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="label">Prénom</label>
-                    <input
-                      type="text"
-                      placeholder="Thomas"
-                      value={form.firstName}
-                      onChange={(e) => updateForm("firstName", e.target.value)}
-                      className="input-field"
-                    />
-                  </div>
-                  <div>
-                    <label className="label">Nom</label>
-                    <input
-                      type="text"
-                      placeholder="Renard"
-                      value={form.lastName}
-                      onChange={(e) => updateForm("lastName", e.target.value)}
-                      className="input-field"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="label">Email professionnel *</label>
-                  <input
-                    required
-                    type="email"
-                    placeholder="thomas@example.com"
-                    value={form.email}
-                    onChange={(e) => updateForm("email", e.target.value)}
-                    className="input-field"
-                  />
                 </div>
 
                 <div>
@@ -423,17 +476,17 @@ function RegisterForm() {
           </div>
         )}
 
-        {/* Step 3 — Infos agence/projet */}
-        {step === 3 && profileType && (
+        {/* Step 4 — Infos agence/projet */}
+        {step === 4 && profileType && (
           <div className="animate-slide-up">
             {/* Progress */}
             <div className="flex items-center gap-3 mb-8">
-              <button onClick={() => setStep(2)} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <button onClick={() => setStep(3)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="flex-1">
                 <div className="flex justify-between text-xs text-slate-400 mb-1.5">
-                  <span>Étape 2 sur 2</span>
+                  <span>Étape 3 sur 3</span>
                   <span>100%</span>
                 </div>
                 <div className="h-1.5 bg-slate-200 rounded-full">
