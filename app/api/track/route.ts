@@ -11,11 +11,16 @@ export async function POST(req: NextRequest) {
     const { page } = await req.json();
     const user_agent = req.headers.get("user-agent") ?? null;
     const referrer = req.headers.get("referer") ?? null;
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+      req.headers.get("x-real-ip") ??
+      null;
 
     await supabase.from("page_views").insert({
       page: page ?? "/",
       user_agent,
       referrer,
+      ip,
     });
 
     return NextResponse.json({ ok: true });

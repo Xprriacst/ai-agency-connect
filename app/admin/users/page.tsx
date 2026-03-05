@@ -43,33 +43,40 @@ export default function AdminUsersPage() {
       setLoading(false);
     }
     async function fetchPageViews() {
-      const { count: total } = await supabase
+      const { data: allViews } = await supabase
         .from("page_views")
-        .select("*", { count: "exact", head: true });
-      setTotalViews(total ?? 0);
+        .select("ip, referrer, visited_at")
+        .order("visited_at", { ascending: true });
+
+      if (!allViews) return;
+
+      const seenIps = new Set<string>();
+      const uniqueViews: { ip: string | null; referrer: string | null; visited_at: string }[] = [];
+      for (const row of allViews) {
+        const key = row.ip ?? `no-ip-${Math.random()}`;
+        if (!seenIps.has(key)) {
+          seenIps.add(key);
+          uniqueViews.push(row);
+        }
+      }
+
+      setTotalViews(uniqueViews.length);
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const { count: todayCount } = await supabase
-        .from("page_views")
-        .select("*", { count: "exact", head: true })
-        .gte("visited_at", today.toISOString());
-      setTodayViews(todayCount ?? 0);
+      setTodayViews(
+        uniqueViews.filter((r) => new Date(r.visited_at) >= today).length
+      );
 
-      const { data: refData } = await supabase
-        .from("page_views")
-        .select("referrer");
-      if (refData) {
-        const counts: Record<string, number> = {};
-        refData.forEach((row: { referrer: string | null }) => {
-          const src = parseSource(row.referrer);
-          counts[src] = (counts[src] ?? 0) + 1;
-        });
-        const sorted = Object.entries(counts)
-          .map(([name, count]) => ({ name, count }))
-          .sort((a, b) => b.count - a.count);
-        setSources(sorted);
-      }
+      const counts: Record<string, number> = {};
+      uniqueViews.forEach((row) => {
+        const src = parseSource(row.referrer);
+        counts[src] = (counts[src] ?? 0) + 1;
+      });
+      const sorted = Object.entries(counts)
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count);
+      setSources(sorted);
     }
     fetchProfiles();
     fetchPageViews();
