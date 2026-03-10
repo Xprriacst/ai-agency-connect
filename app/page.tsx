@@ -9,14 +9,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const salesRoleOptions = [
-  { id: "closer", label: "Closer", icon: "🎯", desc: "Je close les deals, je négocie et je finalise les ventes" },
-  { id: "setter", label: "Setter", icon: "📞", desc: "Je qualifie les leads et prends des RDV pour les closers" },
-  { id: "cold_email", label: "Cold Email", icon: "✉️", desc: "Je génère des leads via campagnes d'emails à froid" },
-  { id: "physique", label: "Prospection physique", icon: "🤝", desc: "Terrain, networking, salons, portes à portes" },
-  { id: "cold_call", label: "Cold Call", icon: "📱", desc: "Prospection téléphonique, appels sortants" },
-  { id: "autre", label: "Autre", icon: "💡", desc: "Mon profil ne rentre pas dans ces catégories" },
-];
 
 const heroRoles = [
   { id: "closer", label: "Je suis Closer", icon: "🎯" },
@@ -93,11 +85,10 @@ const faqs = [
 ];
 
 // ---- Inline form ----
-type Step = 1 | 2 | 3;
+type Step = 2 | 3;
 
-function SalesForm() {
-  const [step, setStep] = useState<Step>(1);
-  const [selectedRole, setSelectedRole] = useState<string>("");
+function SalesForm({ selectedRoles }: { selectedRoles: string[] }) {
+  const [step, setStep] = useState<Step>(2);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -132,7 +123,7 @@ function SalesForm() {
           email: form.email,
           linkedin: form.linkedin,
           bio: [form.result1, form.result2, form.result3].filter(Boolean).join(" | "),
-          skills: [selectedRole, form.sectors].filter(Boolean),
+          skills: [...selectedRoles, form.sectors].filter(Boolean),
           lookingFor: `Taille moyenne de deal : ${form.avgDealSize}. Secteurs : ${form.sectors}`,
         }),
       });
@@ -166,7 +157,7 @@ function SalesForm() {
     <div>
       {/* Steps indicator */}
       <div className="flex items-center gap-2 mb-8">
-        {[1, 2, 3].map((s) => (
+        {[2, 3].map((s) => (
           <div key={s} className="flex items-center gap-2 flex-1">
             <div
               className={cn(
@@ -178,7 +169,7 @@ function SalesForm() {
                   : "bg-slate-100 text-slate-400"
               )}
             >
-              {step > s ? <CheckCircle className="w-4 h-4" /> : s}
+              {step > s ? <CheckCircle className="w-4 h-4" /> : s === 2 ? 1 : 2}
             </div>
             {s < 3 && (
               <div className={cn("flex-1 h-1 rounded-full transition-all", step > s ? "bg-biz-400" : "bg-slate-100")} />
@@ -187,51 +178,9 @@ function SalesForm() {
         ))}
       </div>
 
-      {/* Step 1 — Rôle */}
-      {step === 1 && (
-        <div>
-          <h3 className="text-xl font-extrabold text-slate-900 mb-1">Quel est ton rôle ?</h3>
-          <p className="text-slate-500 text-sm mb-6">Sélectionne le profil qui te correspond le mieux.</p>
-          <div className="space-y-3 mb-6">
-            {salesRoleOptions.map((role) => (
-              <button
-                key={role.id}
-                onClick={() => setSelectedRole(role.id)}
-                className={cn(
-                  "w-full flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all",
-                  selectedRole === role.id
-                    ? "border-biz-500 bg-biz-50"
-                    : "border-slate-200 hover:border-biz-300 hover:bg-slate-50"
-                )}
-              >
-                <span className="text-2xl flex-shrink-0">{role.icon}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-slate-900 text-sm">{role.label}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{role.desc}</div>
-                </div>
-                {selectedRole === role.id && (
-                  <CheckCircle className="w-5 h-5 text-biz-500 flex-shrink-0" />
-                )}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={() => setStep(2)}
-            disabled={!selectedRole}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white gradient-biz shadow-lg shadow-biz-500/25 transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Continuer
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
-      )}
-
       {/* Step 2 — Coordonnées */}
       {step === 2 && (
         <div>
-          <button onClick={() => setStep(1)} className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-600 mb-6 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Retour
-          </button>
           <h3 className="text-xl font-extrabold text-slate-900 mb-1">Tes coordonnées</h3>
           <p className="text-slate-500 text-sm mb-6">On a juste besoin des essentiels pour l&apos;instant.</p>
           <form onSubmit={(e) => { e.preventDefault(); setStep(3); }} className="space-y-4">
@@ -334,6 +283,12 @@ function SalesForm() {
 export default function SalesPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+
+  const toggleRole = (id: string) =>
+    setSelectedRoles((prev) =>
+      prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
+    );
 
   return (
     <div className="min-h-screen bg-white">
@@ -424,26 +379,37 @@ export default function SalesPage() {
             Des fondateurs tech qui ont déjà leur solution IA cherchent des Closers, Setters et SDR pour la vendre. Postule et accède à des projets sérieux, sélectionnés.
           </p>
 
-          {/* Role pills */}
-          <div className="flex flex-wrap gap-2.5 justify-center mb-6">
+          {/* Role pills — multi-select */}
+          <div className="flex flex-wrap gap-2.5 justify-center mb-5">
             {heroRoles.map((role) => (
-              <a
+              <button
                 key={role.id}
-                href="#postuler"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-biz-500 text-white font-semibold text-sm shadow-lg shadow-biz-500/30 hover:bg-biz-600 hover:shadow-biz-500/50 hover:-translate-y-0.5 transition-all active:scale-95"
+                onClick={() => toggleRole(role.id)}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all active:scale-95",
+                  selectedRoles.includes(role.id)
+                    ? "bg-biz-600 text-white shadow-lg shadow-biz-500/40 ring-2 ring-biz-300"
+                    : "bg-white text-biz-700 border-2 border-biz-300 hover:bg-biz-50"
+                )}
               >
                 <span>{role.icon}</span>
                 {role.label}
-                <ArrowRight className="w-3.5 h-3.5 opacity-70" />
-              </a>
+                {selectedRoles.includes(role.id) && <CheckCircle className="w-3.5 h-3.5 opacity-90" />}
+              </button>
             ))}
           </div>
           <a
             href="#postuler"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl gradient-biz text-white font-bold text-base shadow-xl shadow-biz-500/25 hover:shadow-biz-500/40 transition-all hover:-translate-y-0.5 active:scale-95"
+            className={cn(
+              "inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all",
+              selectedRoles.length > 0
+                ? "bg-slate-800 text-white hover:bg-slate-700 shadow-md active:scale-95"
+                : "bg-slate-100 text-slate-400 cursor-default pointer-events-none"
+            )}
+            onClick={(e) => { if (selectedRoles.length === 0) e.preventDefault(); }}
           >
-            Postuler maintenant
-            <ArrowRight className="w-5 h-5" />
+            Continuer
+            <ArrowRight className="w-4 h-4" />
           </a>
         </div>
       </section>
@@ -573,7 +539,7 @@ export default function SalesPage() {
             </p>
           </div>
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-6 sm:p-8">
-            <SalesForm />
+            <SalesForm selectedRoles={selectedRoles} />
           </div>
         </div>
       </section>
