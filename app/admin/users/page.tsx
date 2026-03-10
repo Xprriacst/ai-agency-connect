@@ -250,14 +250,23 @@ export default function AdminUsersPage() {
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Compétences</p>
                   <div className="flex flex-wrap gap-2">
-                    {p.skills.map((s, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded-full"
-                      >
-                        {s}
-                      </span>
-                    ))}
+                    {p.skills.map((s, idx) => {
+                      const roleLabels: Record<string, string> = {
+                        closer: "🎯 Closer",
+                        setter: "📞 Setter",
+                        cold_email: "✉️ Cold Email",
+                        physique: "🤝 Prospection physique",
+                        cold_call: "📱 Cold Call",
+                      };
+                      return (
+                        <span
+                          key={idx}
+                          className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded-full"
+                        >
+                          {roleLabels[s] ?? s}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               )}
