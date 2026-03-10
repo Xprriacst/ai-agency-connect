@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   ArrowRight, Zap, CheckCircle, ShieldCheck,
   TrendingUp, ChevronRight, Star, X, ArrowLeft,
@@ -95,18 +95,9 @@ const faqs = [
 // ---- Inline form ----
 type Step = 1 | 2 | 3;
 
-function SalesForm({ initialRole, onRoleChange }: { initialRole: string; onRoleChange: (role: string) => void }) {
+function SalesForm() {
   const [step, setStep] = useState<Step>(1);
-  const [selectedRole, setSelectedRole] = useState<string>(initialRole);
-
-  useEffect(() => {
-    if (initialRole) setSelectedRole(initialRole);
-  }, [initialRole]);
-
-  const selectRole = (role: string) => {
-    setSelectedRole(role);
-    onRoleChange(role);
-  };
+  const [selectedRole, setSelectedRole] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -205,7 +196,7 @@ function SalesForm({ initialRole, onRoleChange }: { initialRole: string; onRoleC
             {salesRoleOptions.map((role) => (
               <button
                 key={role.id}
-                onClick={() => selectRole(role.id)}
+                onClick={() => setSelectedRole(role.id)}
                 className={cn(
                   "w-full flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all",
                   selectedRole === role.id
@@ -343,7 +334,6 @@ function SalesForm({ initialRole, onRoleChange }: { initialRole: string; onRoleC
 export default function SalesPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [selectedRole, setSelectedRole] = useState<string>("");
 
   return (
     <div className="min-h-screen bg-white">
@@ -435,18 +425,12 @@ export default function SalesPage() {
           </p>
 
           {/* Role pills */}
-          <div className="flex flex-wrap gap-2.5 justify-center mb-8">
+          <div className="flex flex-wrap gap-2.5 justify-center mb-6">
             {heroRoles.map((role) => (
               <a
                 key={role.id}
                 href="#postuler"
-                onClick={() => setSelectedRole(role.id)}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm shadow-lg transition-all active:scale-95",
-                  selectedRole === role.id
-                    ? "bg-biz-700 text-white shadow-biz-500/50 ring-2 ring-biz-300"
-                    : "bg-biz-500 text-white shadow-biz-500/30 hover:bg-biz-600 hover:shadow-biz-500/50 hover:-translate-y-0.5"
-                )}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-biz-500 text-white font-semibold text-sm shadow-lg shadow-biz-500/30 hover:bg-biz-600 hover:shadow-biz-500/50 hover:-translate-y-0.5 transition-all active:scale-95"
               >
                 <span>{role.icon}</span>
                 {role.label}
@@ -454,6 +438,13 @@ export default function SalesPage() {
               </a>
             ))}
           </div>
+          <a
+            href="#postuler"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl gradient-biz text-white font-bold text-base shadow-xl shadow-biz-500/25 hover:shadow-biz-500/40 transition-all hover:-translate-y-0.5 active:scale-95"
+          >
+            Postuler maintenant
+            <ArrowRight className="w-5 h-5" />
+          </a>
         </div>
       </section>
 
@@ -582,7 +573,7 @@ export default function SalesPage() {
             </p>
           </div>
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-6 sm:p-8">
-            <SalesForm initialRole={selectedRole} onRoleChange={setSelectedRole} />
+            <SalesForm />
           </div>
         </div>
       </section>
